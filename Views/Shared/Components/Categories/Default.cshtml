@@ -1,0 +1,11 @@
+﻿@model List<Categories>
+
+<ul class="list-group">
+	@foreach (var item in Model)
+	{
+		<li class="list-group-item"><a asp-action="Index" 
+			asp-controller="Product"
+			asp-route-CatId="@item.CategoryId"
+		> @item.CategoryName</a></li>
+	}
+</ul>
