@@ -50,7 +50,7 @@
 					<p class="card-text"> @item.UnitPrice ₺</p>
 					<p class="card-text"> @item.UnitsInStock Adet</p>
 					<a href="#" class="btn btn-warning">Sepete At</a>
-					<a asp-action="Detay" asp-controller="Product" asp-route-ProductId="@item.ProductId" class="btn btn-primary">Detaya Git</a>
+					<a asp-action="Detay" asp-controller="Product" asp-route-ProductId="@item.ProductId" asp-route-ProductName="@item.ProductName.Replace(" ","-")" class="btn btn-primary">Detaya Git</a>
 				</div>
 			</div>	
 			<br />

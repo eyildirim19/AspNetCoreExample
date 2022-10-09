@@ -25,15 +25,32 @@ namespace AspNetCoreExample
 
 
             // Sabit dosyalara eriþmek için sabit doslarý httprequestlerine açmak gerekir..bunun için useStaticFiles middleware kullanýlýr
-            app.UseStaticFiles(); // default solution'daki wwwroot folderini dýþarý açar..
+            app.UseStaticFiles(); // default solution'daki wwwroot folderini hhtprequest eriþime açar..
 
             app.UseRouting(); // rota kullan
 
             app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllerRoute(
-                    name: "default",
-               pattern: "{controller=Home}/{action=Index}")
-            ); // Rota eþleþtir
+                   name: "Ozel",
+                    //pattern: "{ProductName}-{ProductId}",
+                    pattern: "Urun/{ProductName}-{ProductId}/Detay",
+                     defaults: new { controller = "Product", action = "Detay" });
+                endpoints.MapControllerRoute(
+                  name: "Ozel",
+                   //pattern: "{ProductName}-{ProductId}",
+                   pattern: "Kategori/{CatId}",
+                    defaults: new { controller = "Product", action = "Index" });
+                endpoints.MapControllerRoute(
+                name: "default",
+                    pattern: "{controller=Home}/{action=Index}");
+            }); // Rota eþleþtir
+
+            //app.UseEndpoints(endpoints =>
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //         pattern: "{controller=Home}/{action=Index}")
+            //); // Rota eþleþtir
 
             //app.UseMvc(); // asp.Net core mvc yapýsýný kullanýyoruz..reuest//response arasýna girerek.
             app.Run();

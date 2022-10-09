@@ -41,7 +41,7 @@ namespace AspNetCoreExample.Controllers
             return PartialView("_ProductList", result); // ajax request sonucu geriye partial view dön...
         }
 
-        public IActionResult Detay(int ProductId)
+        public IActionResult Detay(int ProductId,string ProductName)
         {
             var result = dbContext.Products.Find(ProductId);
             return View(result);
