@@ -13,7 +13,8 @@ namespace AspNetCoreExample
             //builder.Services.AddMvc();
 
             //builder.Services.AddControllers(); // Controller yapýsýný oluþtur
-            builder.Services.AddControllersWithViews(); // COntroller yapýsýný viewli oluþtur..
+            builder.Services.AddControllersWithViews() // COntroller yapýsýný viewli oluþtur..; 
+                .AddJsonOptions(c => c.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             builder.Services.AddDbContext<AppDbContext>(c =>
               c.UseSqlServer(builder.Configuration.GetConnectionString("constr"))

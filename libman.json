@@ -5,6 +5,14 @@
     {
       "destination": "wwwroot/lib/bootstrap/dist/",
       "library": "bootstrap@5.2.2"
+    },
+    {
+      "destination": "wwwroot/lib/bootstrap/dist/icon",
+      "library": "bootstrap-icons@1.9.1"
+    },
+    {
+      "destination": "wwwroot/lib/jquery/dist/",
+      "library": "jquery@3.6.1"
     }
   ]
 }

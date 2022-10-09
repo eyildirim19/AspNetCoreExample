@@ -3,11 +3,13 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - EfCoreExample</title>
+	<title>@ViewData["Title"]</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/icon/font/bootstrap-icons.css" />
 
-	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/EfCoreExample.styles.css" asp-append-version="true" />
+	@*<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/EfCoreExample.styles.css" asp-append-version="true" />*@
+
 </head>
 <body>
 	<header>
@@ -27,6 +29,22 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
 					</ul>
+
+					<div class="col-lg-4">
+						<div class="input-group rounded">
+
+							<input autocomplete="off" id="search" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+							<span class="input-group-text border-0" id="search-addon">
+								@*<i class="fas fa-search"></i>*@
+								<i class="bi bi-search"></i>
+							</span>
+
+
+						</div>
+						<div id="searchResult" style="position:absolute; z-index:999; width:100%">
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</nav>
@@ -51,9 +69,70 @@
 			&copy; 2022 - EfCoreExample - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>
 	</footer>
+
+
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	@*@<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>*@
+
+
+
 	@await RenderSectionAsync("Scripts", required: false)
+
+
+
+	<script>
+
+		$(document).ready(function() {
+
+			//$("#search").keyup(function() {		
+			//	var data = $(this).val();
+			//	$.ajax({
+			//		url: "/Product/Search",
+			//		type: "Get",
+			//		data: { searchText: data },
+			//		success: function(cevap) { // gelen cevap function'a parametre ile gönderilir...parametre isminin ne olduğunun hiç bir önemi yoktur...
+			//                     $("#searchResult").html(ceavp);
+			//		}
+			//	});
+			//});
+
+			$("#search").keyup(function() {
+
+				var data = $(this).val();
+
+				$.ajax({
+					url: "/Product/SearchV2",
+					type: "Get",
+					data: { searchText: data },
+					success: function(response) {
+
+						var dat = response;
+						console.log(dat.length);
+
+						var resultHtml = "<ul class='list-group'>";
+						for (var i = 0; i < dat.length; i++) {
+
+							var obj = dat[i]; // tek bir obj olarak al...
+					console.log(obj);
+							//console.log(dat[i].productName +" "+ dat[i].unitPrice);
+							resultHtml += "<li class='list-group-item'>";
+							resultHtml += "<a href='/Product/Detay?ProductId" + obj.ProductId +"'>" + obj.ProductName + "</a>";	
+							resultHtml += "</li>"
+						}
+						resultHtml += "</ul>";
+						$("#searchResult").html(resultHtml);
+						//console.log(response);
+						//alert(response);
+					}
+				});
+
+			});
+		});
+
+	</script>
+
+
 </body>
 </html>

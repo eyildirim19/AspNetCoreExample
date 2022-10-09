@@ -1,0 +1,94 @@
+﻿@model List<Products>
+
+@{
+	ViewData["Title"] = "Ürünler";
+}
+
+ Bu karegoride toplan <b>@ViewBag.ProductCount </b> ürünümüz bulunmakta
+<br />
+@*@ViewData["ProductCount"]*@
+
+@*@Html.Partial("_ProductList",Model)*@
+
+<div id="data" style="min-height:800px;">
+	<partial name="_ProductList" model="Model" />
+</div>
+<br />
+@{
+	//int tempCount = (int)ViewData["ProductCount"];
+	int Count = ViewBag.ProductCount;
+
+	float PageCount = (float)Math.Ceiling((float)Count / 6);
+}
+@if (Count > 6)
+{
+	@*<nav aria-label="Page navigation example">
+		<ul class="pagination">
+			@for (int i = 0; i < PageCount; i++)
+			{
+				int pageName = i + 1;
+				<li class="page-item">
+					<a class="page-link"
+				   asp-action="Pagging"
+				   asp-controller="Product"
+				   asp-route-PageId="@i"
+				   asp-route-CatId="@ViewBag.CategoryId">@pageName</a>
+				</li>
+			}
+
+		</ul>
+	</nav>*@
+
+	<nav aria-label="Page navigation example">
+		<ul class="pagination">
+			@*<li class="page-item"><a class="page-link" href="#">Previous</a></li>*@
+			@for (int i = 0; i < PageCount; i++)
+			{
+				int pageName = i + 1;
+				<li class="page-item">
+					<a class="page-link"
+					href="#"
+					id="page_@i"
+					data-PageId="@i"
+					data-CatId="@ViewBag.CategoryId"
+					onclick="getData(this)">@pageName</a>
+					@*getData=> this ile elementinin kendisni gönderiyoruz... *@
+				</li>
+			}
+			@*<li class="page-item"><a class="page-link" href="#">Next</a></li>*@
+		</ul>
+	</nav>
+}
+<script>
+
+	// ajax requesti yöntemi 1
+	function getData(e) {
+
+		console.log(e);
+
+        var element = document.getElementById(e.id);
+        console.log(element);
+
+        var catId = element.getAttribute("data-CatId");
+        var pageId = element.getAttribute("data-PageId");
+
+        var httpReq; //request nesnesi
+        httpReq = new XMLHttpRequest();  // => XMLHttpRequest => ajax requesti yapılması için kullanılan javascript nesnesidir...
+        httpReq.open("Get", "/Product/Pagging?CatId="+ catId +"&PageId="+ pageId +""); // request'i hazırla
+		httpReq.send(); // requesti gönder....
+
+        httpReq.onreadystatechange = function() {
+            console.log(httpReq.readyState);
+
+
+            if (httpReq.readyState == 4) //request tamamanlandıysa
+            {
+				document.getElementById("data").innerHTML = httpReq.responseText;
+				//console.log(httpReq.responseText); // gelen cevabı console bas...
+			} else if(httpReq.readyState ==3){
+                document.getElementById("data").innerHTML = "yükleniyor...";
+			}
+
+		} 
+	}
+</script>
