@@ -42,8 +42,12 @@ namespace AspNetCoreExample
                    pattern: "Kategori/{CatId}",
                     defaults: new { controller = "Product", action = "Index" });
                 endpoints.MapControllerRoute(
+           name: "areas",
+           pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+         );
+                endpoints.MapControllerRoute(
                 name: "default",
-                    pattern: "{controller=Home}/{action=Index}");
+                    pattern: "{controller=Home}/{action=Index}");     
             }); // Rota eþleþtir
 
             //app.UseEndpoints(endpoints =>
