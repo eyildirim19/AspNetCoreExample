@@ -28,6 +28,17 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
+
+						<li class="nav-item">
+							
+							<a class="nav-link text-dark" asp-area="" asp-controller="StateManagement" asp-action="Index">Demoya Git</a>
+						</li>
+
+						<li class="nav-item">
+							
+							<a class="nav-link text-dark" asp-area="Manage" asp-controller="Home" asp-action="Index">Yönetim Paneline Git</a>
+
+						</li>
 					</ul>
 
 					<div class="col-lg-4">
@@ -70,12 +81,16 @@
 		</div>
 	</footer>
 
-
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+	<script src="~/lib/ajax/dist/jquery.unobtrusive-ajax.js"></script> 
 	@*@<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>*@
+	
 
+	@if (IsSectionDefined("sayacscript"))
+	{
+		@await RenderSectionAsync("sayacscript")		
+	}
 
 
 	@await RenderSectionAsync("Scripts", required: false)

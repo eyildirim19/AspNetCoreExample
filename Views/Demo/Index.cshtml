@@ -1,0 +1,82 @@
+﻿
+
+
+<h1 id="hResult">@Model</h1>
+
+<fieldset>
+	<legend>Client </legend>
+	<input id="btnArrtir" type="button" value="Arttır Client" />
+</fieldset>
+
+<!--<form action="Demo/Index">-->
+
+<fieldset>
+	<legend>Http Request</legend>
+	<form asp-controller="Demo" asp-action="Arttir" method="post">
+		<input type="submit" value="Arttır Server" />
+	</form>
+</fieldset>
+
+
+
+<fieldset>
+
+	<!--
+		
+	form ile ajax requestler yapılabilir
+
+	form ile ajax requesti yapabilmek için manage client-side library seçeneği ile jquery-ajax-unobtrusive kütüphanesi indirilir.
+
+	data-ajax="true"  => ile form request ajax ile yapılır...
+	data-ajax-success => ajax requesti sonucunda response'u alabileceğimiz javascript fonksiyonuınu tetikler...
+
+
+	-->
+
+
+	<!--
+
+	State Management  Request - Response trafiğinde veri kaybı olmaması için verinin yönetilmesi durumudur;
+
+	İki tür State Management vardır;
+
+
+	1) Client-Side
+
+			Cookies => server'in client'a attığı çerezler. Cookieler kullanıcıların bilgisayarlarında tutulur tarayıcılar tarafından yönetilir..
+
+	2) Server-Side
+			
+			Session => (oturum) server'da tutulur. her web uygulaması açıldığı sunucu tarafından clienta özel bir session oluşturulur...buradaki veride server'da saklanır...
+
+
+			session örneği HttpRequeste yapalaım..
+			cookie örnepini Ajax requestte yapalım...
+
+	-->
+
+	<legend> Ajax Request</legend>
+	<form asp-controller="Demo" asp-action="ArttirWithAjax" method="post" data-ajax="true" data-ajax-success="Response">
+		<input type="submit" value="Arttır Server Ajax"  />
+	</form>
+</fieldset>
+
+
+@section sayacscript{
+	<script>
+	
+		$(document).ready(function() {
+			var syc = 0;
+			$("#btnArrtir").click(function() {
+				syc++;
+				$("#hResult").html(syc);
+			});
+		});
+
+	function Response(r) {
+		// r parametresi gelen responsu ifade eder...
+        $("#hResult").html(r);
+	}
+
+	</script>
+}

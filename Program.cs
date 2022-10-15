@@ -20,12 +20,20 @@ namespace AspNetCoreExample
               c.UseSqlServer(builder.Configuration.GetConnectionString("constr"))
                 );
 
+            builder.Services.AddSession(c=> {
+
+                // session süreleri'ni çok fazla uzatmayýn...
+                c.IdleTimeout = TimeSpan.FromMinutes(20); // session saklama süresi 2 dakika. eðer uygulamada 2 dakikadan fazla aktif deðilseniz veri 2 dakikadan sonra silinir...
+            }); // session'ý ekle
+
             // middleware
             var app = builder.Build();
 
 
             // Sabit dosyalara eriþmek için sabit doslarý httprequestlerine açmak gerekir..bunun için useStaticFiles middleware kullanýlýr
             app.UseStaticFiles(); // default solution'daki wwwroot folderini hhtprequest eriþime açar..
+
+            app.UseSession(); // session middlewarei  kullan
 
             app.UseRouting(); // rota kullan
 

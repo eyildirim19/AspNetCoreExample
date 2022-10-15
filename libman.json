@@ -13,6 +13,10 @@
     {
       "destination": "wwwroot/lib/jquery/dist/",
       "library": "jquery@3.6.1"
+    },
+    {
+      "destination": "wwwroot/lib/ajax/dist",
+      "library": "jquery-ajax-unobtrusive@3.2.6"
     }
   ]
 }

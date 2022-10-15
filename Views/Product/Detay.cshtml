@@ -1,5 +1,9 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Products
+
+
+<div id="product" style="min-height:300px;">
+</div>
+
+<div id="previewproduct" style="min-height:300px;">
+	@await Component.InvokeAsync("LastPreviewProduct",new { ProductId = Model.ProductId })
+</div>
