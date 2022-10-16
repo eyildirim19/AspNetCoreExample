@@ -39,9 +39,14 @@
 							<a class="nav-link text-dark" asp-area="Manage" asp-controller="Home" asp-action="Index">Yönetim Paneline Git</a>
 
 						</li>
+						<li class="nav-item">
+							@await Component.InvokeAsync("SepetSummary")
+						</li>
 					</ul>
 
 					<div class="col-lg-4">
+
+
 						<div class="input-group rounded">
 
 							<input autocomplete="off" id="search" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
@@ -83,70 +88,16 @@
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/ajax/dist/jquery.unobtrusive-ajax.js"></script> 
-	@*@<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>*@
-	
+	<script src="~/Scripts/SepetResult.js" asp-append-version="true"></script>
+	<script src="~/Scripts/Search.js" asp-append-version="true"></script>
 
 	@if (IsSectionDefined("sayacscript"))
 	{
-		@await RenderSectionAsync("sayacscript")		
+		@await RenderSectionAsync("sayacscript")
 	}
-
 
 	@await RenderSectionAsync("Scripts", required: false)
 
-
-
-	<script>
-
-		$(document).ready(function() {
-
-			//$("#search").keyup(function() {		
-			//	var data = $(this).val();
-			//	$.ajax({
-			//		url: "/Product/Search",
-			//		type: "Get",
-			//		data: { searchText: data },
-			//		success: function(cevap) { // gelen cevap function'a parametre ile gönderilir...parametre isminin ne olduğunun hiç bir önemi yoktur...
-			//                     $("#searchResult").html(ceavp);
-			//		}
-			//	});
-			//});
-
-			$("#search").keyup(function() {
-
-				var data = $(this).val();
-
-				$.ajax({
-					url: "/Product/SearchV2",
-					type: "Get",
-					data: { searchText: data },
-					success: function(response) {
-
-						var dat = response;
-						console.log(dat.length);
-
-						var resultHtml = "<ul class='list-group'>";
-						for (var i = 0; i < dat.length; i++) {
-
-							var obj = dat[i]; // tek bir obj olarak al...
-					console.log(obj);
-							//console.log(dat[i].productName +" "+ dat[i].unitPrice);
-							resultHtml += "<li class='list-group-item'>";
-							resultHtml += "<a href='/Product/Detay?ProductId" + obj.ProductId +"'>" + obj.ProductName + "</a>";	
-							resultHtml += "</li>"
-						}
-						resultHtml += "</ul>";
-						$("#searchResult").html(resultHtml);
-						//console.log(response);
-						//alert(response);
-					}
-				});
-
-			});
-		});
-
-	</script>
 
 
 </body>

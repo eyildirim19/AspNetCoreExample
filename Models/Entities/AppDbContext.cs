@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+
+
+// Microsoft.AspNetCore.Identity.EntityFrameworkCore =>identity tablolarını kullanmak için öncelikle bu paketi indirmemiz gerekiyor...
+
+// Entity sınıfın IdentityDbContext sınıfından türemelidir
+
 namespace AspNetCoreExample.Models.Entities
 {
     public class AppDbContext : DbContext
     {
-
-
-
 		// Conntectionstring Program.cs sınıfında di ile belirleniyor...
 		public AppDbContext(DbContextOptions builder)
 			: base(builder)

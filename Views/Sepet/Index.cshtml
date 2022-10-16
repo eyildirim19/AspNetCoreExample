@@ -1,0 +1,40 @@
+﻿@model List<SepetViewModels>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Ürün</th>
+			<th>Adet</th>
+			<th>Fiyat</th>
+			<th>Toplam Fiyat</th>
+			<th>İşlem</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.UrunAdi </td>
+				<td>@item.Adet</td>
+				<td>@item.Fiyat</td>
+				<td>@item.ToplamFiyat</td>
+				<td>
+					<a href="#" class="text-danger">Sil</a>
+				</td>
+			</tr>
+		}
+		<tr>
+			<td colspan="4" align="right"> Toplam Adet</td>
+			<td> @Model.Sum(c=> c.Adet) </td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right"> Toplam Fiyat</td>
+			<td> @Model.Sum(c=> c.ToplamFiyat) </td>
+		</tr>
+		<tr>
+			<td colspan="5" align="right"> 
+				<a asp-controller="Order" asp-action="Index" class="btn btn-info">Satın Al</a>
+			</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,13 @@
+﻿@model List<Sepet>
+
+<a asp-controller="Sepet" asp-action="Index" class="nav-link text-dark"> 
+	<span class="input-group-text border-0">
+								@*<i class="fas fa-search"></i>*@
+								<i class="bi bi-basket"></i>
+
+							&nbsp; Sepet  &nbsp;
+	<b id="SepetItemCount">	@Model.Sum(c=> c.Adet)</b>
+							</span>
+
+	
+</a>

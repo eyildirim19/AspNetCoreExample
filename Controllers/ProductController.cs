@@ -78,6 +78,31 @@ namespace AspNetCoreExample.Controllers
             return Json(result);
         }
 
+        public IActionResult Sepet(int ProductID)
+        {
+            List<Sepet> sepets = new List<Sepet>();
+            if (HttpContext.Session.GetString("sepet") != null) // sessionda var mı?
+            {
+                string strList = HttpContext.Session.GetString("sepet"); // sessiondan string olarak al
+                sepets = JsonConvert.DeserializeObject<List<Sepet>>(strList); // alınan string array oldğu için deserialize ile objecte dönüştür
+            }
+
+            Sepet sp = sepets.FirstOrDefault(c => c.ProductId == ProductID);
+            if (sp != null) // liste var mı?
+                sp.Adet++;
+            else
+            {
+                sp = new Sepet();
+                sp.ProductId = ProductID;
+                sp.Adet = 1;
+                sepets.Add(sp);
+            }
+
+            string tempList = JsonConvert.SerializeObject(sepets);
+            HttpContext.Session.SetString("sepet", tempList);
+
+            return Json(sepets);
+        }
 
         private void SetIncelenenUrun(Products prod)
         {
@@ -123,11 +148,5 @@ namespace AspNetCoreExample.Controllers
 
             HttpContext.Response.Cookies.Append("prods", strArray, options);
         }
-    }
-
-    public class ProductVM
-    {
-        public List<Products> pList { get; set; }
-        public int Count { get; set; }
     }
 }

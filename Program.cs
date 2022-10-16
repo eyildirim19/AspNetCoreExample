@@ -37,6 +37,9 @@ namespace AspNetCoreExample
 
             app.UseRouting(); // rota kullan
 
+            app.UseAuthentication(); // oturum
+            app.UseAuthorization(); // yetki
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
