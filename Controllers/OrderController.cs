@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AspNetCoreExample.Controllers
 {
 
-    [Authorize("uye")] // Authorize attribute ile bu controller'a sadece üyeler gelebilir. 
+    [Authorize(Roles ="uye")] // Authorize attribute ile bu controller'a sadece üyeler gelebilir. 
     public class OrderController : Controller
     {
         public IActionResult Index()

@@ -1,4 +1,6 @@
+using AspNetCoreExample.Models;
 using AspNetCoreExample.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreExample
@@ -20,7 +22,20 @@ namespace AspNetCoreExample
               c.UseSqlServer(builder.Configuration.GetConnectionString("constr"))
                 );
 
-            builder.Services.AddSession(c=> {
+            // identity'i ekliyoruz...
+            builder.Services.AddIdentity<AppUser, AppRole>(c =>
+            {
+                c.Password.RequireUppercase = false;
+                c.Password.RequireLowercase = false;
+                c.Password.RequiredLength = 3;
+                c.Password.RequireNonAlphanumeric = false;
+                c.User.RequireUniqueEmail = true; // Email adresi unique olsun...
+                c.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@/";
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
+
+            builder.Services.AddSession(c =>
+            {
 
                 // session süreleri'ni çok fazla uzatmayýn...
                 c.IdleTimeout = TimeSpan.FromMinutes(20); // session saklama süresi 2 dakika. eðer uygulamada 2 dakikadan fazla aktif deðilseniz veri 2 dakikadan sonra silinir...
@@ -58,7 +73,7 @@ namespace AspNetCoreExample
          );
                 endpoints.MapControllerRoute(
                 name: "default",
-                    pattern: "{controller=Home}/{action=Index}");     
+                    pattern: "{controller=Home}/{action=Index}");
             }); // Rota eþleþtir
 
             //app.UseEndpoints(endpoints =>

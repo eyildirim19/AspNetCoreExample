@@ -42,6 +42,21 @@
 						<li class="nav-item">
 							@await Component.InvokeAsync("SepetSummary")
 						</li>
+						<li class="nav-item">
+						
+							@if (User.Identity.IsAuthenticated)
+							{
+							<span>	Hoş geldin @User.Identity.Name </span>
+
+							<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOff">Çıkış Yap</a>
+							}
+							else
+							{
+							<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Oturum Aç</a>	
+							}
+							
+
+						</li>
 					</ul>
 
 					<div class="col-lg-4">
@@ -88,6 +103,7 @@
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/ajax/dist/jquery.unobtrusive-ajax.js"></script> 
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> 
 	<script src="~/Scripts/SepetResult.js" asp-append-version="true"></script>
 	<script src="~/Scripts/Search.js" asp-append-version="true"></script>
 
