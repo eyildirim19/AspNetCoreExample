@@ -1,20 +1,21 @@
 ﻿using AspNetCoreExample.Models.Entities;
+using AspNetCoreExample.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreExample.ViewComponents
 {
     public class CategoriesViewComponent : ViewComponent
     {
-        AppDbContext dbContext; // = new AppDbContext();
-		public CategoriesViewComponent(AppDbContext _dbContext)
-		{
-			dbContext = _dbContext;
-		}
-		public IViewComponentResult Invoke()
+        // CategoryRepository _repository;
+        private readonly Repository<Categories> _repository;
+        public CategoriesViewComponent(CategoryRepository repository)
         {
-            //AppDbContext dbContext= new AppDbContext();
-            var result = dbContext.Categories.ToList();
+            _repository = repository;
+        }
 
+        public IViewComponentResult Invoke()
+        {
+            var result = _repository.GetList();
             return View(result);
         }
     }

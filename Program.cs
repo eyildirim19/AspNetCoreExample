@@ -1,5 +1,6 @@
 using AspNetCoreExample.Models;
 using AspNetCoreExample.Models.Entities;
+using AspNetCoreExample.Models.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,17 @@ namespace AspNetCoreExample
               c.UseSqlServer(builder.Configuration.GetConnectionString("constr"))
                 );
 
+            // CategoryRepository instance bekleyen ctorlara bu instance ver...
+            builder.Services.AddScoped<CategoryRepository>();
+            builder.Services.AddScoped<ProductRepository>();
+
+
+
+            builder.Services.ConfigureApplicationCookie(c =>
+            {
+                c.AccessDeniedPath = "/Permission/Index";
+            });
+
             // identity'i ekliyoruz...
             builder.Services.AddIdentity<AppUser, AppRole>(c =>
             {
@@ -32,7 +44,8 @@ namespace AspNetCoreExample
                 c.User.RequireUniqueEmail = true; // Email adresi unique olsun...
                 c.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@/";
             })
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>() // manager sýnýflarý için
+            .AddErrorDescriber<MyIdentityDescriber>();
 
             builder.Services.AddSession(c =>
             {

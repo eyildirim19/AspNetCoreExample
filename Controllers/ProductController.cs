@@ -1,5 +1,6 @@
 ﻿using AspNetCoreExample.Models;
 using AspNetCoreExample.Models.Entities;
+using AspNetCoreExample.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Linq;
@@ -11,9 +12,12 @@ namespace AspNetCoreExample.Controllers
     public class ProductController : Controller
     {
         readonly AppDbContext dbContext;
-        public ProductController(AppDbContext _dbContext)
+        readonly Repository<Products> _repository;
+        public ProductController(AppDbContext _dbContext,
+            ProductRepository repository)
         {
             dbContext = _dbContext;
+            _repository = repository;
         }
 
         public IActionResult Index(int? CatId)
@@ -35,7 +39,7 @@ namespace AspNetCoreExample.Controllers
 
         public IActionResult Pagging(int? CatId, int PageId)
         {
-            var result = dbContext.Products
+            var result = _repository.GetList()
                 .Where(c => c.CategoryId == CatId)
                 .OrderBy(c => c.ProductId)
                 .Skip(PageId * 6)
@@ -50,9 +54,7 @@ namespace AspNetCoreExample.Controllers
             // bakınız var konusu...
             // ürünü bul
             // Find metodu geriye tek bir obje döner. hangi entites ürezinden çağrılırsa gönderilen parametreyi pk'da arar o tipte obje döner. 
-
-            var result = dbContext.Products.Find(ProductId);
-
+            var result = _repository.GetFindById(ProductId);
             // en son incelediğimiz ürünü cookie'ye yazalım...
             SetIncelenenUrun(result);
 

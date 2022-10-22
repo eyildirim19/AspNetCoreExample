@@ -26,14 +26,18 @@ namespace AspNetCoreExample.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserVM model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([Bind("UserName,Password")] UserVM model)
         {
             // önce kullanıcıyı username göre bul. Email adresi bizde UserName'dir
-            AppUser user = await _userManager.FindByNameAsync(model.Email);
+            AppUser user = await _userManager.FindByNameAsync(model.UserName);
+
+            if (user == null)
+                user = await _userManager.FindByEmailAsync(model.UserName);
 
             if (user != null)
             {
-               var result =  await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
 
                 if (!result.Succeeded)
                 {
@@ -57,32 +61,67 @@ namespace AspNetCoreExample.Controllers
             return View();
         }
 
+        public async Task<IActionResult> CheckUserName(string UserName)
+        {
+            AppUser user = await _userManager.FindByNameAsync(UserName);
+
+            if (user != null)
+                return Json($"{UserName} başka bir kullanıcı tarafından alınmış");
+            else
+                return Json("");
+        }
+
+        public async Task<IActionResult> CheckEmailAdress(string EmailAdres)
+        {
+            AppUser user = await _userManager.FindByEmailAsync(EmailAdres);
+
+            if (user != null)
+                return Json($"{EmailAdres} başka bir kullanıcı tarafından alınmış");
+            else
+                return Json("");
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(UserVM model)
         {
             if (ModelState.IsValid)
             {
 
                 AppUser user = new AppUser();
-                user.UserName = model.Email;
+                user.UserName = model.UserName;
                 user.Name = model.Name;
                 user.SurName = model.SurName;
                 user.Email = model.Email;
 
-                var reuslt = await _userManager.CreateAsync(user, model.Password); // kullanıcıyı oluşturur
-
+                var result = await _userManager.CreateAsync(user, model.Password); // kullanıcıyı oluşturur
+                if (!result.Succeeded)
+                {
+                    foreach (var item in result.Errors)
+                        ModelState.AddModelError(item.Code, item.Description);
+                    return View();
+                }
 
                 // kullanıcıları üye rolü ile sisteme kayıt edelim...
-                if (await _roleManager.RoleExistsAsync("uye")) // role yok ise
+                if (!await _roleManager.RoleExistsAsync("uye")) // role yok ise
                 {
                     AppRole role = new AppRole();
                     role.Name = "uye";
                     await _roleManager.CreateAsync(role);
                 }
 
+                if (!await _roleManager.RoleExistsAsync("admin"))
+                {
+                    AppRole role = new AppRole();
+                    role.Name = "admin";
+                    await _roleManager.CreateAsync(role);
+                }
 
                 await _userManager.AddToRoleAsync(user, "uye"); // user'a üye rolünü set et..
-
+                if (user.Email == "ekrem.yildirim@windowslive.com")
+                {
+                    await _userManager.AddToRoleAsync(user, "admin");
+                }
 
                 await _signInManager.PasswordSignInAsync(user, model.Password, true, false); // oturum aç
                 return RedirectToAction("Index", "Home");

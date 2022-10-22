@@ -30,31 +30,33 @@
 						</li>
 
 						<li class="nav-item">
-							
+
 							<a class="nav-link text-dark" asp-area="" asp-controller="StateManagement" asp-action="Index">Demoya Git</a>
 						</li>
 
-						<li class="nav-item">
-							
-							<a class="nav-link text-dark" asp-area="Manage" asp-controller="Home" asp-action="Index">Yönetim Paneline Git</a>
+						@if (User.IsInRole("admin"))
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="Manage" asp-controller="Home" asp-action="Index">Yönetim Paneline Git</a>
+							</li>
+						}
 
-						</li>
 						<li class="nav-item">
 							@await Component.InvokeAsync("SepetSummary")
 						</li>
 						<li class="nav-item">
-						
+
 							@if (User.Identity.IsAuthenticated)
 							{
-							<span>	Hoş geldin @User.Identity.Name </span>
+								<span>	Hoş geldin @User.Identity.Name </span>
 
-							<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOff">Çıkış Yap</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOff">Çıkış Yap</a>
 							}
 							else
 							{
-							<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Oturum Aç</a>	
+								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Oturum Aç</a>
 							}
-							
+
 
 						</li>
 					</ul>
@@ -102,8 +104,8 @@
 	</footer>
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/ajax/dist/jquery.unobtrusive-ajax.js"></script> 
-	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> 
+	<script src="~/lib/ajax/dist/jquery.unobtrusive-ajax.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="~/Scripts/SepetResult.js" asp-append-version="true"></script>
 	<script src="~/Scripts/Search.js" asp-append-version="true"></script>
 
