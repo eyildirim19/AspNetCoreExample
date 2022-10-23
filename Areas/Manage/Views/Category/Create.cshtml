@@ -1,0 +1,15 @@
+﻿@model CategoryVM
+
+<a asp-action="Index">Geri Dön</a>
+
+<form method="post">
+	<label asp-for="CategoryName"></label>
+	<br />
+	<input asp-for="CategoryName" />
+	<br />
+	<label asp-for="Description"></label>
+	<br />
+	<input asp-for="Description" />
+	<br />
+	<input type="submit" value="Ekle" />
+</form>

@@ -1,5 +1,6 @@
 ﻿using AspNetCoreExample.Models;
 using AspNetCoreExample.Models.Entities;
+using AspNetCoreExample.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -8,10 +9,10 @@ namespace AspNetCoreExample.ViewComponents
 
     public class LastPreviewProduct : ViewComponent
     {
-        AppDbContext dbContext;
-        public LastPreviewProduct(AppDbContext _dbContext)
+        private readonly Repository<Products> _repository;
+        public LastPreviewProduct(Repository<Products> repository)
         {
-            dbContext = _dbContext;
+            _repository = repository;
         }
 
         // ProductId => incelenen ürün id'si
@@ -31,13 +32,10 @@ namespace AspNetCoreExample.ViewComponents
             {
                 List<int> Ids = pList.Select(c => c.ProductId).ToList(); // prpductId seç
                 // id'si Ids listesinde geçenleri getir..
-                products = dbContext.Products.Where(c => Ids.Contains(c.ProductId) && c.ProductId != ProductId).ToList();
+                products = _repository.GetList().Where(c => Ids.Contains(c.ProductId) && c.ProductId != ProductId).ToList();
             }
 
-            
-
             return View(products);
-
         }
     }
 }

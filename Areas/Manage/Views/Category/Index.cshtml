@@ -1,7 +1,24 @@
-﻿@model List<Categories>
+﻿@model List<CategoryVM>
 
-@foreach (var item in Model)
-{
-	<b>	@item.CategoryName</b>
-	<br />
-}
+
+@*<a asp-action="Create" asp-controller="Category">Ekle</a>*@
+<a asp-action="Create">Ekle</a>
+<table>
+	<thead>
+		<tr>
+			<td>Id</td>
+			<td>Adı</td>
+			<td>Açıklama</td>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.CategoryId</td>
+				<td>@item.CategoryName</td>
+				<td>@item.Description</td>
+			</tr>
+		}
+	</tbody>
+</table>

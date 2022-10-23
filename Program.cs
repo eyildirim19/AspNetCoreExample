@@ -23,12 +23,6 @@ namespace AspNetCoreExample
               c.UseSqlServer(builder.Configuration.GetConnectionString("constr"))
                 );
 
-            // CategoryRepository instance bekleyen ctorlara bu instance ver...
-            builder.Services.AddScoped<CategoryRepository>();
-            builder.Services.AddScoped<ProductRepository>();
-
-
-
             builder.Services.ConfigureApplicationCookie(c =>
             {
                 c.AccessDeniedPath = "/Permission/Index";
@@ -46,6 +40,15 @@ namespace AspNetCoreExample
             })
             .AddEntityFrameworkStores<AppDbContext>() // manager sýnýflarý için
             .AddErrorDescriber<MyIdentityDescriber>();
+
+            builder.Services.AddAutoMapper(typeof(Program));
+
+            // CategoryRepository instance bekleyen ctorlara bu instance ver...
+            builder.Services.AddScoped<CategoryRepository>();
+            builder.Services.AddScoped<ProductRepository>();
+            builder.Services.AddScoped<Repository<Products>, ProductRepository>(); // LastViewProduct'ta beklediði instancei gönder...
+            //Repository<Products> temp = new ProductRepository(null);
+
 
             builder.Services.AddSession(c =>
             {

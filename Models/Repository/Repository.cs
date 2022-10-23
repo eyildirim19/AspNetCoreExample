@@ -1,5 +1,6 @@
 ﻿using AspNetCoreExample.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace AspNetCoreExample.Models.Repository
 {
@@ -35,7 +36,11 @@ namespace AspNetCoreExample.Models.Repository
             return _dbSet.ToList();
             //return _dbContext.Set<T>().ToList();
         }
-
+        public List<T> GetList(Expression<Func<T, bool>> expression)
+        {
+            //return _dbContext.Set<T>().Where(expression).ToList();
+            return _dbSet.Where(expression).ToList();
+        }
         public int Update(T entity)
         {
             throw new NotImplementedException();

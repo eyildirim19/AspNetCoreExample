@@ -11,20 +11,17 @@ namespace AspNetCoreExample.Controllers
 {
     public class ProductController : Controller
     {
-        readonly AppDbContext dbContext;
-        readonly Repository<Products> _repository;
-        public ProductController(AppDbContext _dbContext,
+        private readonly ProductRepository _repository;
+        public ProductController(
             ProductRepository repository)
         {
-            dbContext = _dbContext;
             _repository = repository;
         }
 
         public IActionResult Index(int? CatId)
         {
-            var result = dbContext.Products.Where(c => c.CategoryId == CatId).OrderBy(c => c.ProductId).Take(6).ToList();
-
-            int Count = dbContext.Products.Count(c => c.CategoryId == CatId); // Kategoriye göre ürün sayısı
+            var result = _repository.GetList(c => c.CategoryId == CatId).OrderBy(c => c.ProductId).Take(6).ToList();
+            int Count = _repository.GetList(c => c.CategoryId == CatId).Count; // Kategoriye göre ürün sayısı
 
             //ViewBag ve ViewData
             //Controller'dan view'a veya view'dan view'a veri transferi (küçük) için kullanılır
@@ -39,12 +36,17 @@ namespace AspNetCoreExample.Controllers
 
         public IActionResult Pagging(int? CatId, int PageId)
         {
-            var result = _repository.GetList()
-                .Where(c => c.CategoryId == CatId)
-                .OrderBy(c => c.ProductId)
-                .Skip(PageId * 6)
-                .Take(6)
-                .ToList();
+            //var result = _repository.GetList()
+            //    .Where(c => c.CategoryId == CatId)
+            //    .OrderBy(c => c.ProductId)
+            //    .Skip(PageId * 6)
+            //    .Take(6)
+            //    .ToList();
+            var result = _repository.GetList(c => c.CategoryId == CatId)
+              .OrderBy(c => c.ProductId)
+              .Skip(PageId * 6)
+              .Take(6)
+              .ToList();
 
             return PartialView("_ProductList", result); // ajax request sonucu geriye partial view dön...
         }
@@ -65,14 +67,14 @@ namespace AspNetCoreExample.Controllers
 
         public IActionResult Search(string searchText)
         {
-            var result = dbContext.Products.Where(c => c.ProductName.Contains(searchText)).ToList();
+            // var result = _repository.GetList().Where(c => c.ProductName.Contains(searchText)).ToList();
+            var result = _repository.GetList(c => c.ProductName.Contains(searchText)).ToList();
 
             return PartialView("_SearchResult", result);
         }
         public IActionResult SearchV2(string searchText)
         {
-            var result = dbContext.Products.Where(c => c.ProductName.Contains(searchText)).ToList();
-
+            var result = _repository.GetList(c => c.ProductName.Contains(searchText)).ToList();
             //JsonSerializerOptions jOption = new JsonSerializerOptions();
             //jOption.PropertyNamingPolicy = null; // Default CamelCase (kelimeninilkharfiKüçükİkincisi Büyük)= null diyerek PascalCase yaptık..
 

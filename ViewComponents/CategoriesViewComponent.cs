@@ -6,7 +6,7 @@ namespace AspNetCoreExample.ViewComponents
 {
     public class CategoriesViewComponent : ViewComponent
     {
-        // CategoryRepository _repository;
+        //CategoryRepository _repository1;
         private readonly Repository<Categories> _repository;
         public CategoriesViewComponent(CategoryRepository repository)
         {

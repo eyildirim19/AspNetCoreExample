@@ -1,5 +1,6 @@
 ﻿using AspNetCoreExample.Models;
 using AspNetCoreExample.Models.Entities;
+using AspNetCoreExample.Models.Repository;
 using AspNetCoreExample.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -8,10 +9,10 @@ namespace AspNetCoreExample.Controllers
 {
     public class SepetController : Controller
     {
-        private readonly AppDbContext _dbContext;
-        public SepetController(AppDbContext dbContext)
+        private readonly ProductRepository _repository;
+        public SepetController(ProductRepository repository)
         {
-            _dbContext = dbContext;
+            _repository = repository;
         }
         public IActionResult Index()
         {
@@ -22,7 +23,7 @@ namespace AspNetCoreExample.Controllers
             else
                 sepets = new List<Sepet>();
 
-            List<SepetViewModels> result = (from a in _dbContext.Products.ToList()
+            List<SepetViewModels> result = (from a in _repository.GetList()
                          join b in sepets
                          on a.ProductId equals b.ProductId
                          select new SepetViewModels
